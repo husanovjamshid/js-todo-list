@@ -12,11 +12,11 @@ elForm.addEventListener("submit", function (evt) {
 
   elList.innerHTML = "";
 
-  if(elInput.value == '') {
-    alert('Biron nima kriting.')
+  if (elInput.value == "") {
+    alert("Biron nima kriting.");
     return;
   }
-  
+
   var obj = {
     id: newArr.length + 1,
     title: elInput.value,
@@ -25,8 +25,8 @@ elForm.addEventListener("submit", function (evt) {
   for (var item of newArr) {
     var lists = document.createElement("li");
     lists.setAttribute("class", "list-group-item");
-    
-    lists.textContent = `${item.id}. ${item.title}`; 
+
+    lists.textContent = `${item.id}. ${item.title}`;
 
     elList.appendChild(lists);
   }
@@ -34,15 +34,19 @@ elForm.addEventListener("submit", function (evt) {
   elInput.value = "";
 });
 
-// elRecord.addEventListener("click", function () {
-//   elSpinner.classList.remove("d-none");
-// });
+var voice = new webkitSpeechRecognition();
 
-// var voice = new webkitSpeechRecognition();
+voice.lang = "uz-UZ";
 
-// elRecord.addEventListener("click", function () {
-//   voice.start();
-// });
-// console.log(voice);
-// var d = voice.results[0][0].transcript;
-// console.log(d);
+elRecord.addEventListener("click", function () {
+  elSpinner.classList.remove("d-none");
+  voice.start();
+});
+
+voice.onend = function () {
+  elSpinner.classList.add("d-none");
+};
+
+voice.onresult = function (evt) {
+  elInput.value = evt.results[0][0].transcript;
+};
